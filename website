@@ -1,0 +1,63 @@
+import speech_recognition as sr
+import webbrowser
+import pyttsx3
+
+# Initialize the speech recognizer
+r = sr.Recognizer()
+
+# Initialize the text-to-speech engine
+engine = pyttsx3.init()
+
+# Function to open a website in Google Chrome
+def open_website(url):
+    chrome_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'  # Path to your Chrome executable
+    webbrowser.get(chrome_path).open(url)
+
+# Function to process the voice command
+def process_command(command):
+    if 'youtube' in command:
+        open_website('https://www.youtube.com')
+    elif 'youtube music' in command:
+        open_website('https://music.youtube.com')
+    elif 'instagram' in command:
+        open_website('https://www.instagram.com')
+    elif 'whatsapp' in command:
+        open_website('https://web.whatsapp.com')
+    elif 'facebook' in command:
+        open_website('https://www.facebook.com')
+    elif 'twitter' in command:
+        open_website('https://www.twitter.com')
+    elif 'gmail' in command:
+        open_website('https://www.gmail.com')
+    elif 'chat gpt' in command:
+        open_website('https://www.chat.openai.com/')
+          
+
+# Say the initial greeting
+engine.say("I am   'Evolv',I can work as your personal assistant, how can I assist you?")
+engine.runAndWait()
+
+# Main program loop
+while True:
+    try:
+        # Use the default microphone as the audio source
+        with sr.Microphone() as source:
+            print('Listening...')
+            audio = r.listen(source)
+
+        # Recognize speech using Google Speech Recognition
+        print('Recognizing...')
+        command = r.recognize_google(audio).lower()
+
+        print('Command:', command)
+
+        # Process the command
+        process_command(command)
+
+    except sr.UnknownValueError:
+        print('Could not understand audio')
+
+    except sr.RequestError as e:
+        print('Could not request results; {0}'.format(e))
+
+   
