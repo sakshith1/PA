@@ -1,0 +1,73 @@
+import nltk
+import pyttsx3
+import wikipedia
+
+# Initialize NLTK
+nltk.download('punkt')
+
+# Initialize pyttsx3
+engine = pyttsx3.init()
+
+# Function to handle text-to-speech conversion
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+# Function to search Wikipedia and retrieve summaries
+# Function to search Wikipedia and retrieve summaries
+def search_wikipedia(query):
+    try:
+        # Search Wikipedia
+        results = wikipedia.search(query)
+        summaries = []
+        if results:
+            # Get summaries for each result
+            for result in results:
+                page = wikipedia.page(result, auto_suggest=False)
+                summaries.append(page.summary)
+            return summaries
+        else:
+            return ["I'm sorry, I couldn't find any relevant information."]
+
+    except wikipedia.exceptions.DisambiguationError as e:
+        # Handle disambiguation error
+        return ["There are multiple options. Can you please be more specific?"]
+
+    except wikipedia.exceptions.PageError as e:
+        # Handle page error
+        return ["I'm sorry, I couldn't find any relevant information."]
+
+# Rest of the code...
+
+        # Handle disambiguation error
+        return ["There are multiple options. Can you please be more specific?"]
+
+    except wikipedia.exceptions.PageError as e:
+        # Handle page error
+        return ["I'm sorry, I couldn't find any relevant information."]
+
+# Function to handle user input and generate responses
+def respond(input_text):
+    if 'bye' in input_text.lower():
+        # Exit the program
+        print("Assistant: Goodbye!")
+        speak("Goodbye!")
+        exit()
+
+    else:
+        # Search Wikipedia
+        results = search_wikipedia(input_text)
+        for i, result in enumerate(results):
+            print(f"Result {i+1}:")
+            print(result)
+            print("-" * 50)
+            speak(f"Result {i+1}:")
+            speak(result)
+
+# Run the personal assistant
+print("Assistant: Hello! How can I assist you today?")
+speak("Hello! How can I assist you today?")
+
+while True:
+    user_input = input("You: ")
+    respond(user_input)
